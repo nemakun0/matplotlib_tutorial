@@ -1,0 +1,558 @@
+****************************** MATPLOTLIB TUTORIAL PART 1 ******************************
+MATPLOTLIB
+pip install matplotlib indirilir
+
+PYPLOT
+veri görselleştirmesi için yaygın olarak kullanılan bir Python kütüphanesinin bir parçasıdır. matplotlib kütüphanesi, grafik oluşturmak, veri görselleştirmek ve bilimsel grafikler çizmek için kullanılır. pyplot modülü, MATLAB benzeri bir grafik çizme arabirimi sağlar.
+
+- from matplotlib import pyplot as plt
+ile modülü koda import ettik
+
+grafik için bir x ve y veri dizisi tanımlamalıyız.
+- plt.plot(x_axis,y axis) : bu grafiğin oluşturulmasını sağlar
+- plt.xlabel("x ekseninin ismi") : eksene isim verdik
+- plt.ylabel("y ekseninin ismi") : eksene isim verdik
+- plt.title("grafik başlığı") : grafiğe başlık verdik
+
+grafikte birden fazla çizgi olacaksa birden fazla kez plt.plot(x_axis,y axis) kodu çalıştırılır.
+bu çizgilere isim vermek için ise 2 yol var
+1- plt.legend(["ilk oluşturulan çizgi", "2. oluştrulan çizgi","..."]) : bunun dezavantajı hangisinin önce oluşturulduğunu bilemk zorundasın karışıklık olması yüksek ihtimalli
+
+2- çizgi oluşturulurken bir parametre ekleyerek bu işi çözebiliriz
+ plt.plot(x_axis,y axis, label="vermek istediğin isim")
+
+çizgilerde değişiklik yapmak istersek (marker style);
+plt.plot() içerisinde yapacağız ve bu değişiklikler y eksenininden hemen sonra yazlacak
+bunun formatı iki eşkilde oluyor
+1- 'marker line color'
+2- 'color marker line'
+
+line sytles
+'-'
+'--'
+'-.'
+':'
+ 
+colors
+'b': blue
+'g':green
+'r':red
+'c':cyan
+'m':magneta
+'y':yellow
+'k':black
+'w':white
+
+örnek
+plt.plot(x_axis,y axis, 'k--',label="vermek istediğin isim") 
+çizgimiz siyah renkte ve -- şeklinde olacak değer verilmeyen kısımlar default değerleriyle devam edecek
+
+bu şekilde yazılan bir kodun okunması okldukça zor aslında neyin ne oldupunu bilmeli ve yorumlamalısın bunun yerine şu şekilde bir kullanım daha readable olacaktır:
+plt.plot(x_axis,y axis,color='k', linestyle = '--' ,label="vermek istediğin isim")
+
+marker kullanımı tam olarak benim noktalarımın olduğu yerleri daha belirgin bir şekilde göstermesini sağlar
+bunu da marker= '.' şeklinde ekleme yapabilirsin daha çeşitli hallerine dökümantasyondan ulaşabilirsin
+
+color için hex value kullanabilirsin #______ şeklindeki palet numaralarını yazarak çeşitli renkler kullanabilirsin.
+
+- linewidth= _ : bu argüman sayesinde çizginin kalınlığı değiştirilebilir.
+örnek kullnaım
+plt.plot(x_axis,y axis,color='k',linewidth=3 ,label="vermek istediğin isim")
+
+- plt.tight_layout() : Alt grafikler içeren bir figürde, alt grafikler arasındaki ve figür kenarları ile alt grafikler arasındaki boşlukları ayarlamak için kullanılır. Bu, genellikle alt grafiklerin içeriği ile figürün kenarları arasında daha hoş bir denge sağlar.
+
+- plt.grid() : bir grafik üzerine ızgara (grid) eklemek için kullanılır.
+plt.grid(True) ifadesi, çizgi grafiğine bir ızgara ekler. 
+plt.grid(False), ızgara kaldırılır
+
+PLT STYLE
+- plt.style.available : ifadesi, Matplotlib kütüphanesinde kullanılabilir olan grafik stili adlarını liste olarak döndüren bir özelliktir. Matplotlib, farklı temalar ve grafik stilleri sunarak çizimlerin görünümünü değiştirmenize olanak tanır. Bu, çizimlerinizi daha estetik veya belirli bir tasarım diline uygun hale getirmek için kullanışlıdır.
+bunu print ederek seçeneklerini görebilirsin --> print(plt.style.available)
+
+- plt.style.use('fivethirtyeight') : bu stili kulan demek
+
+- plt.xkcd() : fonksiyonu, Matplotlib kütüphanesinde bulunan bir özelliktir ve çizimlerinizi XKCD tarzında (XKCD Comics tarzı) oluşturmanıza olanak tanır. XKCD tarzı, çizgi romanlardaki çizim tarzına benzer, basitleştirilmiş ve komik bir görünüm sunar.
+
+çizilen grafiği açtığımız penceredeki save tuşundan kaydedebiliriz aynı zamanda bunu programın içinden yapmamızın da bir yolu var.
+- plt.savefig('plot.png') : ifadesi, Matplotlib kütüphanesinde bir grafik veya çizimi belirtilen dosya adı ve uzantısıyla kaydetmek için kullanılır. Bu ifadeyi kullanarak oluşturduğunuz grafiği bir dosyaya kaydedebilir ve daha sonra bu dosyayı paylaşabilir veya başka bir yerde kullanabilirsiniz.
+
+- plt.show() : çizdiğimiz grafiklerin görünmesini istiyorsak bu komutu kullanmalıyız.
+
+****************************** MATPLOTLIB TUTORIAL PART 2 ******************************
+
+- plt.bar() : sütun (bar) grafikleri oluşturmak için kullanılır. tıpkı plt.plot gibi argümanlar alır aynı işlemler bunda da geçerlidir.
+
+plot ve bar aynı anda bir grafikte de kullanılabilir
+
+birden fazla grafik aynı anda görünecekse bunlar birbirinin üstüne biner ve istediğimiz görüntüyü elde edemeyiz bunun üstesinden gelebilmek için bir numpy dizi kullanacağız
+
+ages_x = [25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35] 
+verisi olsun elimizde bu x eksenini farklı y eksenleriyle beraber kullanacağız
+
+x_indexes = np.arange(len(ages_x))
+width = 0.25
+
+dev_y = [38496, 42000, 46752, 49320, 53200,
+         56000, 62316, 64928, 67317, 68748, 73752]
+plt.bar(x_indexes - width, dev_y, width = width,color="#444444", label="All Devs")
+
+x_indexes - width : bu işlem sütunların yan yana dizilmesini sağlayacak 3 sütun olduğu için biz birisinden çıkarıp birisine dokunmayıp bir diğerine ise toplam işlemi yaptık
+
+py_dev_y = [45372, 48876, 53850, 57287, 63016,
+            65998, 70003, 70000, 71496, 75370, 83640]
+plt.bar(x_indexes, py_dev_y,width = width, color="#008fd5", label="Python")
+
+js_dev_y = [37810, 43515, 46823, 49293, 53437,
+            56373, 62375, 66674, 68745, 68746, 74583]
+plt.bar(x_indexes + width, js_dev_y, width = width,color="#e5ae38", label="JavaScript")
+
+
+VERİYİ CSV DOSYASINDAN ALMA
+1. YÖNTEM
+
+
+from matplotlib import pyplot as plt
+import numpy as np
+import csv: koda csv yi ekleyelim
+from collections import Counter #counter kullanabilmek için ekledik
+
+#csv doyasını açar
+with open('data.csv')as csv_file:
+    # CSV dosyasını okuma işlemcisine bağla (DictReader, her satırı bir sözlük olarak okur)
+    csv_reader = csv.DictReader(csv_file) 
+
+# bir CSV dosyasındaki 'LanguagesWorkedWith' adlı bir sütundaki verileri okuyarak, her bir dilin sayısını sayan bir Counter nesnesini güncelliyor.
+    for row in csv_reader:
+	# Dil listesini al ve Counter nesnesini güncelle
+        language_counter.update(row['LanguagesWorkedWith'].split(';'))
+
+#burada sıralanan dilleri popülerleiğine ve diline göre dizilere böleceğiz
+languages = []
+popularity = []
+
+for item in language_counter.most_common(15):
+    languages.append(item[0])#tuple şeklinde bölünmüş olan verinin ilk elemanını diziye kaydetti
+    popularity.append(item[1])#tuple şeklinde bölünmüş olan verinin 2. elemanını diziye kaydetti
+#bunu bir grafiğe dökeceğiz
+#normalde bunu plt.bar() ile yapıyorduk ama dil isimleri uzun olduğundan karışıyordu
+
+#**** 
+language.reverse()
+popularity.reverse()
+
+plt.barh(languages,popularity)
+# horizontal/yatay grafik oluşturur.bundan dolayı x ve y nin yerlerini değiştirdik
+
+plt.title("Most Popular Languages")
+plt.ylabel("Programming Languages")
+plt.xlabel("Number Of People Who Use")
+
+plt.tight_layout()
+
+plt.show()
+
+#bu şekildeyken grafik üstte az olan altta çok olan şeklinde görünüyor çoktan aza olacak şekilde sıralanması için **** olan yeri yazdık
+
+2.YÖNTEM
+USING PANDAS
+
+import csv
+from matplotlib import pyplot as plt
+from collections import Counter
+import numpy as np
+import pandas as pd
+
+# Matplotlib stilini "fivethirtyeight" olarak belirleme
+plt.style.use("fivethirtyeight")
+
+# CSV dosyasını pandas DataFrame'e yükleme
+data = pd.read_csv("data.csv")
+
+# 'Responder_id' ve 'LanguagesWorkedWith' sütunlarını al
+ids = data["Responder_id"]
+lang_responses = data['LanguagesWorkedWith']
+
+# Dil sayısını tutmak için bir Counter nesnesi oluştur
+language_counter = Counter() 
+
+# Her bir anket katılımcısının bildirdiği dilleri say
+for response in lang_responses:
+    language_counter.update(response.split(';'))
+
+# En popüler 15 dilin adını ve kullanım sıklıklarını listelere kaydetme
+languages = []
+popularity = []
+
+for item in language_counter.most_common(15):
+    languages.append(item[0])  # Dil adını listeye ekleme
+    popularity.append(item[1])  # Dil kullanım sıklığını listeye ekleme
+
+# Yatay sütun grafiği oluşturma
+plt.barh(languages, popularity)
+
+# Grafiğin başlık, x-ekseni ve y-ekseni etiketlerini ekleme
+plt.title("Most Popular Languages")
+plt.ylabel("Programming Languages")
+plt.xlabel("Number Of People Who Use")
+
+# Grafiği sıkı bir şekilde düzenleme
+plt.tight_layout()
+
+# Grafiği gösterme
+plt.show()
+
+****************************** MATPLOTLIB TUTORIAL PART 3 ******************************
+
+PIE CHARTS
+
+bu kodlarla bir pie chart oluşturduk oransal olarak pasta dilimi yaptı 
+slices = [60,40]
+labels = ["sixty", "forty"]#görünecek etiket verildi
+color = ["blue","red","yellow","green"]
+
+plt.pie(slices, labels=labels, colors = color  ,wedgeprops= {"edgecolor":"black"})
+# wedgeprops= {"edgecolor":"black"} : kenarlarına siyah çizgi çekti
+#slices dizisine daha fazla eleman ekleyip bunları da renklendirmek istersek plt.pie kısmına eklemk için bir color dizisi oluşturabiliriz.
+
+plt.pie(slices)
+---------------------------------------------
+from matplotlib import pyplot as plt
+
+plt.style.use("fivethirtyeight")
+
+slices = [59219, 55466, 47544, 36443, 35917]
+labels = ['JavaScript', 'HTML/CSS', 'SQL', 'Python', 'Java']
+explode = [0,0,0,0.1,0]
+# pasta diliminin grafiği içindeki konumunu değiştirmek için kullanılır. Yani, bu parametre, belirli bir dilimi pasta grafiği içinde biraz dışa doğru itmek veya ayırmak için kullanılır. Bu, belirli bir dilimi vurgulamak veya odaklanmak istediğinizde kullanışlıdır.
+
+plt.pie(slices, labels=labels ,explode = explode ,shadow = True ,wedgeprops= {"edgecolor":"black"})
+
+plt.title("My Awesome Pie Chart")
+
+plt.tight_layout()
+
+plt.show()
+
+-------------------------------
+- shadow : parametresi, Matplotlib kütüphanesinde pasta grafiği (plt.pie()) oluştururken kullanılan bir parametredir. Bu parametre, pasta grafiği dilimlerinin altına bir gölge eklemek veya çıkarmak için kullanılır.
+shadow parametresinin değeri True veya False olabilir. True ise gölge eklenir, False ise gölge kaldırılır.
+ 
+- startangle : parametresi, pasta grafiği (plt.pie()) oluşturulurken kullanılan bir parametredir. Bu parametre, pasta grafiğinin ilk dilimini başlangıç açısını belirler. Yani, pasta grafiği dilimleri hangi açıyla başlayacaksa, bu açıyı belirlemek için kullanılır.
+Örneğin, startangle=90 ifadesi, pasta grafiğinin ilk diliminin x-eksenine göre 90 derece döndürüleceği anlamına gelir.
+
+- autopct="%1.1f%%" : Bu parametre, dilimlerin üzerinde yüzdelik değerlerin görüntülenmesini sağlar.
+Bu dizede %1.1f%% kullanılırsa, yüzdelik değerler bir ondalık basamağa kadar ve bir ondalık nokta ile ifade edilir.
+
+****************************** MATPLOTLIB TUTORIAL PART 4 ******************************
+STACK PLOTS
+ 
+- stackplot : Matplotlib kütüphanesinde bulunan bir fonksiyondur ve yığılmış alan grafiği oluşturmak için kullanılır. Yığılmış alan grafiği, birkaç veri setinin birbirinin üzerine konulmasıyla oluşturulan bir grafik türüdür. Bu tür grafikler, her bir veri setinin toplamın ne kadarını temsil ettiğini göstermek için kullanışlıdır.
+
+plt.legend(loc="upper left"):
+- plt.legend() : fonksiyonu, bir Matplotlib grafiğine etiketleri eklemek için kullanılır. loc (location) parametresi, bu açıklamaların grafiğin hangi bölgesinde görüneceğini belirler.
+Örneğin, plt.legend(loc="upper left") ifadesi, grafiğin sol üst köşesine bir açıklama (legend) ekleyecektir. Bu, genellikle grafiğin üzerinde, ancak grafiğin içine dahil edilmeden sol üst köşede görünecektir.
+"upper right": Sağ üst köşe
+"upper left": Sol üst köşe
+"lower left": Sol alt köşe
+"lower right": Sağ alt köşe
+"right": Sağ orta
+"center left": Sol orta (orta yükseklikte)
+"center right": Sağ orta (orta yükseklikte)
+"lower center": Alt orta (orta genişlikte)
+"upper center": Üst orta (orta genişlikte)
+"center": Ortada
+
+- plt.legend(loc=(0.07, 0.05)) : ifadesi, Matplotlib kütüphanesinde bir grafiğe etiket eklerken, bu etiketin konumunu belirlemek için kullanılır. loc parametresi, bir çift sayıdan oluşan bir tuple alır ve bu sayılar, açıklamanın pozisyonunu belirtir.
+Örneğin, (0.07, 0.05) ifadesi, grafiğin sol alt köşesine (0.07, 0.05) oranında bir uzaklıkta bir açıklama yerleştirecektir. Bu değerler, grafiğin genişliği ve yüksekliğine göre oranlar olarak ifade edilir. Örneğin, (0,0) grafiğin sol alt köşesi, (1,1) ise grafiğin sağ üst köşesidir.
+
+Grafik, her bir oyuncunun toplam süreye olan katkısını gösterir. Örneğin, player1 için, her dakikada geçirilen süre grafiğin altına eklenir. Bu sürelerin üst üste toplamı, her dakikadaki toplam süreyi verir. Oyuncuların renkleri ve etiketleri, grafiği daha anlaşılır kılmak için kullanılır.
+
+****************************** MATPLOTLIB TUTORIAL PART 5 ******************************
+
+- plt.fill_between(): fonksiyonu, bir grafiğin belirli bir aralığı doldurmak için kullanılır. Bu fonksiyon genellikle iki veri seti arasındaki alana renk eklemek veya belirli bir eksenin üzerindeki bir bölgeyi vurgulamak için kullanılır.
+
+plt.fill_between(ages, py_salaries) : ages ile py_salaries arasını doldurdu.
+
+- alpha parametresi, renk şeffaflığını ayarlar; 0 (tamamen şeffaf) ile 1 (tamamen opak) arasında değer alabilir.
+
+overall_median = 57287
+plt.fill_between(ages, py_salaries,overall_median, alpha=0.25 )
+
+- overall_median'a tanımlanan değere (0 dan 57287 e) kadar py_salaries grafiğinin üst kısmı o değerden sonra ise alt kısmı dolduruldu
+
+- where : parametresini kullanarak belirli bir yatay çizgi (overall_median) ve bir çizgi grafiği (py_salaries) arasındaki alanı doldur
+
+- interpolate=True parametresi : dolgu alanının daha pürüzsüz görünmesini sağlar
+
+****************************** MATPLOTLIB TUTORIAL PART 6 ******************************
+HISTOGRAMS
+
+Histogramlar, veri dağılımını görselleştirmek için kullanılan etkili bir grafik türüdür. Bir histogram, bir değişkenin değerlerinin frekansını veya olasılığını gösteren bir çubuk grafiktir. Genellikle sayısal verilerin dağılımını incelemek için kullanılır.
+Histogramlar şu temel unsurlardan oluşur:
+1- Çubuklar (Bars): Veri aralıkları belirli bir aralık veya sınıfa bölünür ve her bir sınıfın frekansını veya olasılığını gösteren dikdörtgen çubuklar kullanılır. Çubukların genişliği, sınıf aralığına, yüksekliği ise o sınıfa ait gözlemlerin sayısına karşılık gelir.
+
+2- Sınıf Aralıkları (Bins): Veri seti belirli aralıklara bölünür ve her aralık bir sınıfı temsil eder. Bu sınıflar genellikle "bins" olarak adlandırılır.
+
+3- Eksenler: X-ekseni genellikle veri sınıflarını, y-ekseni ise frekansları veya olasılıkları gösterir.
+---------------------------------------
+ages = [18, 19, 21, 25, 26, 26, 30, 32, 38, 45, 55]
+bins = [10,20,30,40,50,60]
+
+plt.hist(ages, bins=bins , edgecolor="black")
+kodunda kendi bins dizimizi oluşturmamız değerlerin nasıl bölündüğünü grafik üzerinde görmeyi kolaylaştırır.
+
+- log parametresi : Normal ölçekte, y-ekseni her bir çubuğun gerçek frekans veya olasılığını gösterir. Ancak logaritmik ölçekte, y-eksenindeki her bir birim 10'un kuvveti olarak artar. Bu, büyük değerlere sahip olan çubukların daha küçük değerlere oranla daha belirgin hale gelmesini sağlar. 
+
+- plt.axvline() : fonksiyonu, bir Matplotlib grafiğine dikey bir çizgi eklemek için kullanılır. Bu fonksiyon, belirli bir x-ekseni konumuna dikey bir çizgi çizmek için kullanılır. Genellikle, bir grafikte belirli bir değeri vurgulamak veya özel bir noktayı göstermek amacıyla kullanılır
+
+plt.axvline(x, color, linestyle, linewidth) fonksiyonunun temel parametreleri şunlardır:
+
+- x: Çizginin x-eksenindeki konumu.
+- color: Çizgi rengi.
+- linestyle: Çizgi stili (örneğin, "--" veya "-." gibi).
+- linewidth: Çizgi kalınlığı.
+
+****************************** MATPLOTLIB TUTORIAL PART 7 ******************************
+
+SCATTER PLOTS
+
+Evet, tabii ki! plt.scatter() fonksiyonu, Matplotlib kütüphanesinde kullanılan bir fonksiyondur ve bir scatter plot (nokta grafiği) oluşturmak için kullanılır. Scatter plot, iki sayısal değişken arasındaki ilişkiyi görselleştirmek için kullanılır. İki eksen üzerinde noktaların dağılımını gösterir
+
+- s : paramatresi noktaların sizeını değiştirmek için kullanılır.
+- c : paramatresi noktaların colorını değiştirmek için kullanılır.
+- marker : noktaların şeklinin nasıl olacağına karar verir (https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html)
+plt.scatter(x,y, s = 100, c = "green", marker = "x")
+
+plt.scatter(x,y, s = 100, c = "green", edgecolor = "black", linewidth = 1, alpha = 0.75)
+- x ve y: Noktaların x ve y koordinatları.
+- s: Noktaların boyutu (size).
+- c: Noktaların rengi.
+- edgecolor: Noktaların kenar rengi.
+- linewidth: Kenar çizgisi kalınlığı.
+- alpha: Nokta saydamlığı.
+- cmap: renk skalasını belirtmek için kullanılır. Renk skalası, sayısal değerlerle renkleri eşleyen bir dizi renkten oluşur. 
+ 
+plt.colorbar() fonksiyonu, renk skalasını içeren renk çubuğunu (colorbar) grafiğinizin yanına eklemenizi sağlar.
+
+cbar.set_label("Satisfaction") kullanılarak, renk çubuğuna bir etiket (label) eklenir. 
+
+noktaların büyüklüğünü veriye göre değişmesini istersek bir sizes listesi oluşturup s argümanına bu listeyi verebiliriz.
+örneğin:
+----------------------------------------------------------------
+import pandas as pd
+from matplotlib import pyplot as plt
+
+plt.style.use('seaborn-v0_8')
+
+x = [5, 7, 8, 5, 6, 7, 9, 2, 3, 4, 4, 4, 2, 6, 3, 6, 8, 6, 4, 1]
+y = [7, 4, 3, 9, 1, 3, 2, 5, 2, 4, 8, 7, 1, 6, 4, 9, 7, 7, 5, 1]
+
+colors = [7, 5, 9, 7, 5, 7, 2, 5, 3, 7, 1, 2, 8, 1, 9, 2, 5, 6, 7, 5]
+sizes = [209, 486, 381, 255, 191, 315, 185, 228, 174,
+        538, 239, 394, 399, 153, 273, 293, 436, 501, 397, 539]
+
+plt.scatter(x,y, s = sizes, c = colors,
+            cmap = "Greens", edgecolor = "black", linewidth = 1, alpha = 0.75)
+
+cbar= plt.colorbar()
+cbar.set_label("Satisfaction")
+
+plt.tight_layout()
+plt.show()
+----------------------------------------------------------------
+import pandas as pd
+from matplotlib import pyplot as plt
+
+# Seaborn-v0_8 stilini kullanma
+plt.style.use('seaborn-v0_8')
+
+# '2019-05-31-data.csv' adlı CSV dosyasını okuma
+data = pd.read_csv('2019-05-31-data.csv')
+
+# Veri setinden gerekli sütunları al
+view_count = data['view_count']   # İzlenme sayısı
+likes = data['likes']             # Beğeni sayısı
+ratio = data['ratio']             # Beğeni/Beğenmeme oranı
+
+# Scatter plot oluşturma, renk skalasını 'summer' olarak belirleme
+# İzlenme sayısı ve beğeni sayısı noktaların konumunu belirlerken,
+# Beğeni/Beğenmeme oranını renklendirme
+plt.scatter(view_count, likes, c=ratio, cmap="summer",
+            edgecolor="black", linewidth=1, alpha=0.75)
+
+# Renk çubuğunu ekleyerek renkleri açıklama
+cbar = plt.colorbar()
+cbar.set_label("Beğeni/Beğenmeme Oranı")
+
+# x ve y eksenlerini logaritmik ölçekte ayarlama
+plt.xscale("log")
+plt.yscale("log")
+
+# Grafiğin başlığı ve eksen etiketleri
+plt.title('Trending YouTube Videos')
+plt.xlabel('İzlenme Sayısı (View Count)')
+plt.ylabel('Toplam Beğeni (Total Likes)')
+
+# Grafik düzenini düzenleme
+plt.tight_layout()
+
+# Grafiği göster
+plt.show()
+
+#izlenme sayısı (view_count) ve beğeni sayısı (likes) verileri noktaların konumunu belirlerken, beğeni/beğenmeme oranı (ratio) verisini renklendirir.
+
+****************************** MATPLOTLIB TUTORIAL PART 8 ******************************
+
+plt.plot_date() fonksiyonu, tarih verilerini kullanarak çizgi grafiği oluşturmak için Matplotlib kütüphanesinde kullanılır.
+
+plt.plot_date(dates,y, linestyle= "solid")
+- linestyle= "solid" : bu ifade noktaların çizgi ile bağlanması için yaızldı
+
+- plt.gcf().autofmt_xdate() : kodu, Matplotlib kütüphanesinde bir çizim figürünün x eksenindeki tarih etiketlerini otomatik olarak düzenlemek için kullanılır. Bu, genellikle tarih verileri ile çalışırken x eksenindeki tarih etiketlerini daha okunabilir bir şekilde düzenlemek için kullanılır.
+
+- date_format = mpl_dates.DateFormatter("%b,%d %Y"): nesnesi, tarih etiketlerini belirli bir biçime dönüştürmek için kullanılır. Bu durumda, %b,%d %Y formatında bir tarih biçimi belirlenmiştir. %b ayın kısaltması, %d gün ve %Y yıl olarak temsil eder.
+- plt.gca().xaxis.set_major_formatter(date_format) satırı ile x eksenindeki tarih etiketlerine bu biçimi uygularsınız.
+----------------------------------------------------------------
+import pandas as pd
+from datetime import datetime, timedelta
+from matplotlib import pyplot as plt
+from matplotlib import dates as mpl_dates
+
+# Seaborn-v0_8 stilini kullanma
+plt.style.use('seaborn-v0_8')
+
+# 'data.csv' adlı CSV dosyasından veri okuma
+data = pd.read_csv('data.csv')
+
+# 'Date' sütununu datetime objelerine dönüştürme
+data['Date'] = pd.to_datetime(data["Date"])
+
+# Tarihe göre sıralama
+data.sort_values("Date", inplace=True)
+
+# Veri setinden tarih ve kapanış fiyatlarını alın
+price_date = data['Date']
+price_close = data['Close']
+
+# plt.plot_date() fonksiyonunu kullanarak çizgi grafiği oluşturma
+plt.plot_date(price_date, price_close, linestyle="solid")
+
+# x eksenindeki tarih etiketlerini otomatik olarak düzenleme
+plt.gcf().autofmt_xdate()
+
+# Grafik başlığı ve eksen etiketleri
+plt.title('Bitcoin Prices')
+plt.xlabel('Tarih (Date)')
+plt.ylabel('Kapanış Fiyatı (Closing Price)')
+
+# Grafik düzenini düzenleme
+plt.tight_layout()
+
+# Grafiği göster
+plt.show()
+----------------------------------------------------------------
+
+****************************** MATPLOTLIB TUTORIAL PART 9 ******************************
+
+PLOTTING LIVE DATA IN REAL-TIME
+
+matplotlib.animation modülü, Matplotlib kütüphanesinde animasyon oluşturmak için kullanılır. Bu modül, animasyonlu grafikler oluşturmanıza ve dinamik olarak verilerinizi görselleştirmenize olanak tanır.
+
+FuncAnimation sınıfı, bir veya birden çok işlevi kullanarak bir animasyon oluşturmanıza olanak sağlar. Bu sınıf, bir veya birden çok kare oluşturarak belirli bir işlevi belirli bir süre boyunca çağırır.
+
+- ani = FuncAnimation(plt.gcf(), animate, interval=1000) : Bu satır, FuncAnimation sınıfını kullanarak bir animasyon oluşturur.
++ plt.gcf(): gcf (get current figure) fonksiyonu, mevcut figürü alır. Yani, bu animasyonu içeren figürü alır.
+
++ animate: Bu, her karede gerçekleştirilecek işlevi temsil eder. Önceki örnekte animate fonksiyonu, her karede yeni bir rastgele y değeri ekleyerek çizgi grafiğini güncelliyordu.
+
++ interval=1000: Bu, kareler arasındaki geçiş süresini belirler. Burada, 1000 milisaniye (1 saniye) olarak ayarlanmıştır. Yani, her kare 1 saniye boyunca görüntülenir.
+
+- plt.cla() :  Bu fonksiyon, bir figürdeki var olan çizimleri temizler ve yeni çizimlere yer açar. bizim grafiğimizde bu yokken her saniyede grafik güncellenirken renk değişimi oluyordu bunun önüne geçti bu işlev
+
+----------------------------------------------------------------
+import random
+from itertools import count
+import pandas as pd
+import matplotlib.pyplot as plt
+from matplotlib.animation import FuncAnimation
+
+# Matplotlib stili 'fivethirtyeight' olarak ayarlanır
+plt.style.use('fivethirtyeight')
+
+# Boş listeler oluşturulur
+x_vals = []
+y_vals = []
+
+# itertools.count() kullanılarak bir sayaç oluşturulur
+index = count()
+
+# animate fonksiyonu, her karede gerçekleştirilecek işlevi tanımlar
+def animate(i):
+    # 'data.csv' adlı CSV dosyasındaki verileri okur
+    data = pd.read_csv('data.csv')
+
+    # Verileri ayrıştırma
+    x = data['x_value']
+    y1 = data['total_1']
+    y2 = data['total_2']
+
+    # Mevcut çizimleri temizle
+    plt.cla()
+
+    # İki çizgi grafiği çizilir
+    plt.plot(x, y1, label="channel 1")
+    plt.plot(x, y2, label="channel 2")
+
+    # Çizgi grafiği etiketleri eklenir
+    plt.legend(loc='upper left')
+
+    # Grafiği düzenleme
+    plt.tight_layout()
+
+# FuncAnimation sınıfı kullanılarak animasyon oluşturulur
+ani = FuncAnimation(plt.gcf(), animate, interval=1000)
+
+# Grafiği göster
+plt.tight_layout()
+plt.show()
+
+****************************** MATPLOTLIB TUTORIAL PART 10 ******************************
+SUBPLOTS
+
+fig, (ax1, ax2) = plt.subplots(nrows = 2, ncols = 1)
+
+ax1.plot(ages, dev_salaries, color='#444444',
+         linestyle='--', label='All Devs')
+
+ax2.plot(ages, py_salaries, label='Python')
+ax2.plot(ages, js_salaries, label='JavaScript')
+
+bu şekilde tanımlarsak aynı ekranda alt alta iki grafik olacak üsttekinde all devs görünürken alttakinde pyton ve js görünecek bunların x y eksenleri aynı değerlere sahip olacak
+
+sharex =True : aynı x değerlerine sahip olduklarından alttaki grafiğin x değerleri ekranda görünmey edevam ederken üsttekinin ki kalkar çünkü fazlalıktır
+
+fig1, ax1 = plt.subplots()
+fig2, ax2 = plt.subplots()
+bu şekilde yazarsak kodu bu durumda iki ayrı pencerede iki ayrı grafik açılır
+
+subplot, Matplotlib kütüphanesinde birden çok alt grafik içeren bir figür oluşturmak için kullanılır ve çeşitli avantajlara sahiptir. İşte subplot'un kullanılmasının bazı avantajları:
+
+Birden Çok Grafik Gösterme: subplot fonksiyonu, bir figür içinde birden çok alt grafik penceresi oluşturmanıza izin verir. Bu, aynı anda birden çok veri setini veya farklı grafik türlerini karşılaştırmanıza, analiz etmenize olanak tanır.
+
+Düzen ve Kompaktlık: Birden çok alt grafik oluşturarak, grafikleri düzenli bir şekilde düzenleyebilir ve daha az yer kaplamalarını sağlayabilirsiniz. Bu özellik, birçok alt grafik içeren karmaşık grafik düzenlerini daha anlaşılır hale getirir.
+
+Koordinat Paylaşımı: Alt grafiklerin eksenlerini paylaşmak, biri üzerinde yapılan bir değişikliğin diğerlerini de etkilemesini sağlar. Bu, grafikler arasında tutarlı bir ölçek ve karşılaştırma olanağı sağlar.
+
+Kolay İlerleme: Alt grafiklerdeki konumlar ve içerikler sayesinde, çeşitli veri setleri veya analiz sonuçları üzerinde ilerleme kaydetmek ve bir dizi grafik oluşturmak daha kolaydır.
+
+Karmaşık Grafik Düzenleri: Birden çok alt grafik oluşturarak, karmaşık grafik düzenleri elde edebilirsiniz. Örneğin, 2x2'lik bir düzenle 4 alt grafik içeren bir figür oluşturabilirsiniz.
+
+plt.subplot(nrows, ncols, index);
+- nrows: Toplam satır sayısını belirtir.
+- ncols: Toplam sütun sayısını belirtir.
+- index: Alt grafiklerin konumunu belirten bir sayıdır.
+
+plt.subplots(2, 2, sharex='col', sharey='row') şeklinde kullanarak sırasıyla sütunları ve satırları paylaşan bir düzen oluşturabilirsiniz.
+
+
+
